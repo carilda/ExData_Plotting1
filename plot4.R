@@ -1,14 +1,12 @@
 #!/usr/bin/Rscript
 
-## plot2.R
+## plot4.R
 ## date: 09/13/2015
 ## author:  Carilda A Thomas
 ## system: Linux 3.19.8-100.fc20.x86_64 #1 SMP Tue May 12 17:08:50 UTC 2015
 ##      x86_64 x86_64 x86_64 GNU/Linux
 
 
-
-library(data.table)
 
 ## download exdata-data-household_power_consumption.zip
 ## unzip exdata-data-household_power_consumption.zip
@@ -25,9 +23,20 @@ df$Datetime <- as.POSIXct(paste(df$Date, df$Time), format="%d/%m/%Y %H:%M:%S")
 
 ## end preparationx
 ## png defaults are ok for assignment (480x480 in pixels)
-png("plot2.png")
+png("plot4.png")
 
+par(mfrow = c(2,2))
 plot(df$Datetime, df$Global_active_power, type = "l", xlab = "", ylab = "Global Active Power (kilowatts)")
 
-## close the device
+plot(df$Datetime, df$Voltage, xlab = "datetime", ylab = "Voltage", type = "l")
+
+plot(df$Datetime, df$Sub_metering_1, type = "n", xlab = "", ylab = "Energy sub metering")
+lines(df$Datetime, df$Sub_metering_1, col = "black")
+lines(df$Datetime, df$Sub_metering_2, col = "red")
+lines(df$Datetime, df$Sub_metering_3, col = "blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1, 1, 1), col = c("black", "red", "blue"))
+
+plot(df$Datetime, df$Global_reactive_power, type = "l", xlab = "datetime", ylab = "Global_reactive_power")
+
 dev.off()
+
